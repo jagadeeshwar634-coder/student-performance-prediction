@@ -14,14 +14,12 @@ BASE_DIR = Path(__file__).resolve().parent
 
 app = FastAPI()
 
-
 # Templates
 templates = Jinja2Templates(
     directory=BASE_DIR / "templates"
 )
 
-
-# Static files
+# Static
 app.mount(
     "/static",
     StaticFiles(directory=BASE_DIR / "static"),
@@ -34,8 +32,7 @@ app.mount(
 def home(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="login.html",
-        context={"request": request}
+        name="login.html"
     )
 
 
@@ -44,8 +41,7 @@ def home(request: Request):
 def register(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="register.html",
-        context={"request": request}
+        name="register.html"
     )
 
 
@@ -54,8 +50,7 @@ def register(request: Request):
 def dashboard(request: Request):
     return templates.TemplateResponse(
         request=request,
-        name="index.html",
-        context={"request": request}
+        name="index.html"
     )
 
 
@@ -79,7 +74,6 @@ scaler = joblib.load(
 )
 
 
-# Student Data
 class StudentData(BaseModel):
     study_hours: float
     attendance: float
@@ -88,7 +82,6 @@ class StudentData(BaseModel):
     sleep_hours: float
 
 
-# Prediction API
 @app.post("/predict")
 def predict(data: StudentData):
 
