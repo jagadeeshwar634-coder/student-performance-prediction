@@ -1,53 +1,74 @@
-
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Register</title>
-
-    <link rel="stylesheet" href="{{ url_for('static', path='login.css') }}">
+    <title>Create Account | Register</title>
+    <!-- Use Inter font or system fonts for consistency -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', path='register.css') }}">
 </head>
-
 <body>
 
-    <div class="register-container">
+    <div class="login-wrapper">
+        <div class="login-card">
+            
+            <!-- Branding Logo -->
+            <div class="logo">🚀</div>
 
-        <h1>Create Account</h1>
+            <!-- Header Information -->
+            <h1>Get Started</h1>
+            <p class="welcome">Create a new account</p>
+            <p class="subtitle">Enter your details to register and start exploring.</p>
 
-        <p>Register to continue</p>
+            <!-- Registration Form -->
+            <form id="registerForm">
+                
+                <div class="input-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" placeholder="Enter your name" required autocomplete="name">
+                </div>
 
-       <form id="registerForm">
+                <div class="input-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" placeholder="Enter your email" required autocomplete="email">
+                </div>
 
-    <label>Name</label>
-    <input type="text" id="name" placeholder="Enter your name">
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <div class="password-box">
+                        <input type="password" id="password" placeholder="Create a password" required autocomplete="new-password">
+                        <button type="button" id="togglePassword" class="eye-btn" aria-label="Toggle password visibility">🙈</button>
+                    </div>
+                </div>
 
-    <label>Email</label>
-    <input type="email" id="email" placeholder="Enter your email">
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <div class="password-box">
+                        <input type="password" id="confirmPassword" placeholder="Confirm your password" required autocomplete="new-password">
+                        <button type="button" id="toggleConfirmPassword" class="eye-btn" aria-label="Toggle confirm password visibility">🙈</button>
+                    </div>
+                </div>
 
-    <label>Password</label>
-    <input type="password" id="password" placeholder="Enter password">
+                <button type="submit" class="register-btn">Create Account</button>
 
-    <label>Confirm Password</label>
-    <input type="password" id="confirmPassword" placeholder="Confirm password">
+                <!-- Feedback Message Container -->
+                <p id="message"></p>
 
-    <button type="submit" class="register-btn">Register</button>
+            </form>
 
-    <p id="message"></p>
+            <!-- Footer / Navigation Divider -->
+            <div class="divider">or</div>
 
-</form>
+            <div class="signup">
+                Already have an account? 
+                <a href="/">Login</a>
+            </div>
 
-
-
-        <p>
-            Already have an account?
-            <a href="/">Login</a>
-        </p>
-
+        </div>
     </div>
 
-   <script src="{{ url_for('static', path='register.js') }}"></script>
+    <script src="{{ url_for('static', path='register.js') }}"></script>
 
 </body>
 </html>

@@ -1,94 +1,186 @@
-const registerForm = document.getElementById("registerForm");
+document.addEventListener("DOMContentLoaded", function () {
 
-const message = document.getElementById("message");
+    const registerForm = document.getElementById("registerForm");
+    const message = document.getElementById("message");
 
+    // ==============================
+    // MESSAGE
+    // ==============================
+    function showMessage(text, color) {
+        if (!message) return;
 
-registerForm.addEventListener("submit", function (event) {
-
-    event.preventDefault();
-
-    const name =
-        document.getElementById("name").value.trim();
-
-    const email =
-        document.getElementById("email").value.trim();
-
-    const password =
-        document.getElementById("password").value;
-
-    const confirmPassword =
-        document.getElementById("confirmPassword").value;
-
-
-    // Check password
-
-    if (password !== confirmPassword) {
-
-        message.textContent =
-            "❌ Passwords do not match.";
-
-        message.style.color = "#dc2626";
-
-        return;
+        message.textContent = text;
+        message.style.color = color;
     }
 
 
-    // Get existing users
+    // ==============================
+    // PASSWORD SHOW / HIDE
+    // ==============================
+    function setupPasswordToggle(toggleId, inputId) {
 
-    let users =
-        JSON.parse(localStorage.getItem("users")) || [];
+        const toggleBtn = document.getElementById(toggleId);
+        const passwordField = document.getElementById(inputId);
 
+        if (!toggleBtn || !passwordField) {
+            console.error(
+                "Not found:",
+                toggleId,
+                inputId
+            );
+            return;
+        }
 
-    // Check email already exists
+        toggleBtn.addEventListener("click", function (event) {
 
-    const existingUser =
-        users.find(user => user.email === email);
+            event.preventDefault();
 
+            if (passwordField.type === "password") {
 
-    if (existingUser) {
+                passwordField.type = "text";
+                toggleBtn.textContent = "🙈";
 
-        message.textContent =
-            "❌ Email already registered.";
+            } else {
 
-        message.style.color = "#dc2626";
+                passwordField.type = "password";
+                toggleBtn.textContent = "👁";
 
-        return;
+            }
+        });
     }
 
 
-    // Create new user
+    // Password
+    setupPasswordToggle(
+        "togglePassword",
+        "password"
+    );
 
-    const newUser = {
-
-        name: name,
-        email: email,
-        password: password
-
-    };
-
-
-    // Add user
-
-    users.push(newUser);
-
-    localStorage.setItem(
-        "users",
-        JSON.stringify(users)
+    // Confirm Password
+    setupPasswordToggle(
+        "toggleConfirmPassword",
+        "confirmPassword"
     );
 
 
-    message.textContent =
-        "✅ Registration successful!";
+    // ==============================
+    // REGISTER FORM
+    // ==============================
+    if (registerForm) {
 
-    message.style.color = "#16a34a";
+        registerForm.addEventListener("submit", function (event) {
+
+            event.preventDefault();
+
+            const nameInput =
+                document.getElementById("name");
+
+            const emailInput =
+                document.getElementById("email");
+
+            const passwordInput =
+                document.getElementById("password");
+
+            const confirmPasswordInput =
+                document.getElementById("confirmPassword");
 
 
-    // Go to login page
+            const name =
+                nameInput.value.trim();
 
-    setTimeout(() => {
+            const email =
+                emailInput.value.trim().toLowerCase();
 
-        window.location.href = "/";
+            const password =
+                passwordInput.value;
 
-    }, 1000);
+            const confirmPassword =
+                confirmPasswordInput.value;
+
+
+            // Empty fields
+            if (
+                !name ||
+                !email ||
+                !password ||
+                !confirmPassword
+            ) {
+
+                showMessage(
+                    "❌ Please fill in all required fields.",
+                    "#dc2626"
+                );
+
+                return;
+            }
+
+
+            // Password match
+            if (password !== confirmPassword) {
+
+                showMessage(
+                    "❌ Passwords do not match.",
+                    "#dc2626"
+                );
+
+                return;
+            }
+
+
+            // Get users
+            const users =
+                JSON.parse(
+                    localStorage.getItem("users")
+                ) || [];
+
+
+            // Check email
+            const emailExists = users.some(
+                user =>
+                    user.email.toLowerCase() === email
+            );
+
+
+            if (emailExists) {
+
+                showMessage(
+                    "❌ This email is already registered. Please log in.",
+                    "#dc2626"
+                );
+
+                return;
+            }
+
+
+            // Create user
+            const newUser = {
+                name: name,
+                email: email,
+                password: password
+            };
+
+
+            users.push(newUser);
+
+
+            localStorage.setItem(
+                "users",
+                JSON.stringify(users)
+            );
+
+
+            // Success
+            showMessage(
+                "✅ Registration successful! Redirecting to login...",
+                "#16a34a"
+            );
+
+
+            setTimeout(function () {
+                window.location.href = "/";
+            }, 1000);
+
+        });
+    }
 
 });

@@ -1,3 +1,6 @@
+/* ==========================================
+   1. CSS RESET & GLOBAL STYLES
+   ========================================== */
 * {
     margin: 0;
     padding: 0;
@@ -5,170 +8,298 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
     min-height: 100vh;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background: linear-gradient(135deg, #667eea, #764ba2);
-
+    background: 
+        radial-gradient(circle at 10% 20%, rgba(129, 140, 248, 0.25), transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.25), transparent 40%),
+        linear-gradient(135deg, #eef2ff, #f5f3ff);
+    background-attachment: fixed;
     padding: 20px;
+    overflow-x: hidden;
 }
 
-/* Register Container */
-
-.register-container {
+/* ==========================================
+   2. CONTAINER & CARD STRUCTURE
+   ========================================== */
+.login-wrapper {
     width: 100%;
-    max-width: 430px;
-
-    background: #ffffff;
-
-    padding: 35px;
-
-    border-radius: 16px;
-
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    max-width: 440px;
+    position: relative;
 }
 
-/* Heading */
+.login-card {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 45px 38px;
+    border-radius: 32px;
+    box-shadow: 
+        0 20px 40px rgba(15, 23, 42, 0.08),
+        0 1px 3px rgba(15, 23, 42, 0.05),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    animation: cardIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-.register-container h1 {
-    text-align: center;
+@keyframes cardIn {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
 
-    color: #222;
-
+/* ==========================================
+   3. BRANDING & HEADER TYPOGRAPHY
+   ========================================== */
+.logo {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 30px;
-
-    margin-bottom: 8px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #6366f1, #7c3aed);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    animation: floatLogo 4s ease-in-out infinite;
 }
 
-/* Subtitle */
+@keyframes floatLogo {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
 
-.register-container > p {
+h1 {
     text-align: center;
-
-    color: #777;
-
-    margin-bottom: 25px;
+    font-size: 28px;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
 }
 
-/* Input Group */
+.welcome {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 4px;
+}
 
+.subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+}
+
+/* ==========================================
+   4. FORM INPUTS & STATES
+   ========================================== */
 .input-group {
     margin-bottom: 18px;
 }
 
 .input-group label {
     display: block;
-
-    margin-bottom: 7px;
-
-    color: #333;
-
-    font-size: 14px;
-
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 700;
+    color: #334155;
+    margin-bottom: 8px;
+    letter-spacing: -0.2px;
 }
-
-/* Input */
 
 .input-group input {
     width: 100%;
-
-    padding: 13px 14px;
-
-    border: 1px solid #ddd;
-
-    border-radius: 8px;
-
-    outline: none;
-
+    padding: 14px 16px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    color: #0f172a;
     font-size: 15px;
+    outline: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
-    transition: 0.3s;
+.input-group input::placeholder {
+    color: #94a3b8;
+}
+
+.input-group input:hover {
+    border-color: #cbd5e1;
+    background: #ffffff;
 }
 
 .input-group input:focus {
-    border-color: #667eea;
-
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+    border-color: #6366f1;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
 }
 
-/* Button */
+/* Password View Toggle Box */
+/* ==========================================
+   PASSWORD VIEW TOGGLE
+   ========================================== */
 
-button {
+.password-box {
+    position: relative;
     width: 100%;
+}
 
-    padding: 13px;
+.password-box input {
+    width: 100%;
+    padding-right: 52px;
+}
 
-    margin-top: 5px;
+.eye-btn {
+    position: absolute;
+
+    right: 10px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     border: none;
+    outline: none;
 
-    border-radius: 8px;
-
-    background: #667eea;
-
-    color: white;
-
-    font-size: 16px;
-
-    font-weight: bold;
+    background: transparent;
 
     cursor: pointer;
 
-    transition: 0.3s;
+    font-size: 17px;
+
+    padding: 0;
+
+    z-index: 20;
+
+    pointer-events: auto;
 }
 
-button:hover {
-    background: #5568d8;
+.eye-btn:hover {
+    background: rgba(99, 102, 241, 0.08);
+    border-radius: 8px;
 }
 
-/* Message */
+.eye-btn:focus {
+    outline: none;
+}
 
+/* ==========================================
+   5. INTERACTIVE BUTTONS
+   ========================================== */
+.register-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 14px;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(135deg, #6366f1, #7c3aed);
+    box-shadow: 0 10px 20px rgba(99, 102, 241, 0.35);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.register-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 26px rgba(99, 102, 241, 0.45);
+    filter: brightness(1.05);
+}
+
+.register-btn:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================
+   6. FEEDBACK & DIVIDERS
+   ========================================== */
 #message {
-    margin-top: 15px;
-
     text-align: center;
-
+    margin-top: 15px;
     font-size: 14px;
-
-    font-weight: bold;
+    font-weight: 600;
 }
 
-/* Login Link */
+.divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0;
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
 
-.register-container a {
-    color: #667eea;
+.divider::before,
+.divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+}
 
+.signup {
+    text-align: center;
+    color: #64748b;
+    font-size: 14px;
+}
+
+.signup a {
+    color: #6366f1;
+    font-weight: 700;
     text-decoration: none;
-
-    font-weight: bold;
+    transition: color 0.2s;
 }
 
-.register-container a:hover {
+.signup a:hover {
     text-decoration: underline;
 }
 
-/* Bottom Text */
-
-.register-container form + p {
-    margin-top: 20px;
-
-    margin-bottom: 0;
+/* ==========================================
+   7. BROWSER AUTOFILL FIX
+   ========================================== */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #0f172a;
+    -webkit-box-shadow: 0 0 0px 1000px #f8fafc inset;
+    transition: background-color 5000s ease-in-out 0s;
 }
 
-/* Mobile */
-
+/* ==========================================
+   8. RESPONSIVE DESIGN (MOBILE)
+   ========================================== */
 @media (max-width: 480px) {
-
-    .register-container {
-        padding: 25px 20px;
+    body {
+        padding: 15px;
     }
 
-    .register-container h1 {
-        font-size: 26px;
+    .login-card {
+        padding: 32px 24px;
+        border-radius: 24px;
+    }
+
+    h1 {
+        font-size: 24px;
     }
 }
