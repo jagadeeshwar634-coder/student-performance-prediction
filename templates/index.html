@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Header -->
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Student Performance Dashboard – predict and analyze academic performance with ML.">
 
-  <title>Student Performance Dashboard</title>
+  <title>Student Performance</title>
 
- <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
-  
+  <link rel="stylesheet" href="{{ url_for('static', path='style.css') }}">
 </head>
 
 <body>
@@ -38,17 +37,84 @@
     <main class="main-content">
 
       <!-- Header -->
-      <header class="topbar">
-        <div class="topbar-title">
-          <h1>Student Performance</h1>
-          <p>Predict and analyze your academic performance.</p>
+     <!-- Header -->
+<header class="topbar">
+
+  <!-- Left: Page Title -->
+  <div class="topbar-title">
+    <h1>Student Performance</h1>
+    <p>Predict and analyze your academic performance.</p>
+  </div>
+
+
+  <!-- Right Side -->
+  <div class="topbar-right">
+
+    <!-- API Status -->
+    <div class="status" aria-live="polite">
+      <span aria-hidden="true"></span>
+      API Online
+    </div>
+
+
+    <!-- User Menu -->
+    <div class="user-menu">
+
+      <!-- Round User Button -->
+      <button
+        type="button"
+        class="user-avatar-btn"
+        aria-label="Open user menu"
+        aria-expanded="false"
+      >
+        <div class="user-avatar">
+          👤
+        </div>
+      </button>
+
+
+      <!-- User Dropdown -->
+      <div class="user-dropdown">
+
+        <!-- User Information -->
+        <div class="dropdown-user">
+
+          <div class="dropdown-avatar">
+            👤
+          </div>
+
+          <div class="dropdown-user-info">
+            <strong>{{ user.name }}</strong>
+            <small>{{ user.email }}</small>
+          </div>
+
         </div>
 
-        <div class="status" aria-live="polite">
-          <span aria-hidden="true"></span>
-          API Online
-        </div>
-      </header>
+
+        <!-- Divider -->
+        <div class="dropdown-divider"></div>
+
+
+        <!-- View Profile -->
+        <a href="/profile" class="dropdown-item">
+          <span>👤</span>
+          <span>View Profile</span>
+        </a>
+
+
+        <!-- Logout -->
+        <a href="/logout" class="dropdown-item logout-item">
+          <span>🚪</span>
+          <span>Logout</span>
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
 
       <!-- Stats -->
       <section class="stats-grid" aria-label="Key metrics">

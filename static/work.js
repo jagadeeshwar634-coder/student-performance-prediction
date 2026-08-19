@@ -39,9 +39,15 @@ const progressMap = {
 
 
 function getNumberValue(id) {
-  const value = document.getElementById(id).value;
-  const num = Number(value);
-  return Number.isFinite(num) ? num : 0;
+  const input = document.getElementById(id);
+
+  if (!input || input.value.trim() === "") {
+    return NaN;
+  }
+
+  const num = Number(input.value);
+
+  return Number.isFinite(num) ? num : NaN;
 }
 
 function clamp(value, min = 0, max = 100) {
@@ -50,7 +56,13 @@ function clamp(value, min = 0, max = 100) {
 
 function setProgress(key, percent) {
   const p = progressMap[key];
+
+  if (!p || !p.bar || !p.text) {
+    return;
+  }
+
   const value = clamp(percent);
+
   p.bar.style.width = `${value}%`;
   p.text.textContent = `${Math.round(value)}%`;
 }
@@ -181,6 +193,7 @@ function generateSuggestions(data) {
 }
 
 function resetDashboard() {
+  form.reset();
   scoreValueEl.textContent = "--";
   scoreCardEl.textContent = "--";
   studyCardEl.textContent = "--";
@@ -267,4 +280,72 @@ if (form) {
 
 if (resetButton) {
   resetButton.addEventListener("click", resetDashboard);
+}
+/* ========================================
+   USER PROFILE DROPDOWN
+======================================== */
+
+const userMenu = document.querySelector(".user-menu");
+const userAvatarBtn = document.querySelector(".user-avatar-btn");
+
+if (userMenu && userAvatarBtn) {
+
+    // Open / Close dropdown
+    userAvatarBtn.addEventListener("click", function (event) {
+
+        event.stopPropagation();
+
+        const isOpen = userMenu.classList.toggle("active");
+
+        userAvatarBtn.setAttribute(
+            "aria-expanded",
+            isOpen ? "true" : "false"
+        );
+    });
+
+
+    // Prevent dropdown click from closing
+    const userDropdown =
+        userMenu.querySelector(".user-dropdown");
+
+    if (userDropdown) {
+
+        userDropdown.addEventListener("click", function (event) {
+            event.stopPropagation();
+        });
+
+    }
+
+
+    // Click outside → close
+    document.addEventListener("click", function (event) {
+
+        if (!userMenu.contains(event.target)) {
+
+            userMenu.classList.remove("active");
+
+            userAvatarBtn.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+    });
+
+
+    // ESC → close
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape") {
+
+            userMenu.classList.remove("active");
+
+            userAvatarBtn.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+        }
+
+    });
+
 }

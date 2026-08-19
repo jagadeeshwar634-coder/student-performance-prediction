@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>{{ user.name }} - Profile</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='profile.css') }}">
+
+</head>
+
+<body>
+
+    <!-- =========================
+         TOPBAR
+    ========================== -->
+
+    <header class="profile-topbar">
+
+        <a href="/dashboard" class="back-btn">
+            ← Dashboard
+        </a>
+
+        <div class="profile-page-title">
+            <h1>User Profile</h1>
+            <p>Profile & prediction history</p>
+        </div>
+
+        <a href="/logout" class="logout-btn">
+            🚪 Logout
+        </a>
+
+    </header>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="profile-container">
+
+
+        <!-- USER HEADER -->
+
+        <section class="profile-hero">
+
+            <div class="large-avatar">
+                👤
+            </div>
+
+            <div class="hero-user-info">
+
+                <h2>{{ user.name }}</h2>
+
+                <p>{{ user.email }}</p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROFILE INFORMATION -->
+
+        <section class="profile-card">
+
+            <div class="section-heading">
+
+                <div class="section-icon">
+                    👤
+                </div>
+
+                <div>
+                    <h2>Profile</h2>
+                    <p>Your account information</p>
+                </div>
+
+            </div>
+
+
+            <div class="profile-details">
+
+                <div class="detail-box">
+
+                    <span>Name</span>
+
+                    <strong>
+                        {{ user.name }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>Email</span>
+
+                    <strong>
+                        {{ user.email }}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <span>User ID</span>
+
+                    <strong>
+                        #{{ user.id }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PREDICTION HISTORY -->
+
+        <section class="history-card">
+
+            <div class="history-heading">
+
+                <div>
+
+                    <h2>📊 Prediction History</h2>
+
+                    <p>
+                        Your previous prediction results
+                    </p>
+
+                </div>
+
+                <span class="history-badge">
+                    {{ history|length }} Predictions
+                </span>
+
+            </div>
+
+
+            {% if history %}
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Study</th>
+                            <th>Attendance</th>
+                            <th>Previous</th>
+                            <th>Assignment</th>
+                            <th>Sleep</th>
+                            <th>Predicted</th>
+                            <th>Date</th>
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for item in history %}
+
+                        <tr>
+
+                            <td>
+                                {{ item.study_hours }} hrs
+                            </td>
+
+                            <td>
+                                {{ item.attendance }}%
+                            </td>
+
+                            <td>
+                                {{ item.previous_score }}
+                            </td>
+
+                            <td>
+                                {{ item.assignment_score }}
+                            </td>
+
+                            <td>
+                                {{ item.sleep_hours }} hrs
+                            </td>
+
+                            <td>
+                                <span class="score">
+                                    {{ item.predicted_score }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ item.created_at.strftime("%d %b %Y") }}
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="empty-history">
+
+                <div>📊</div>
+
+                <h3>No Predictions Yet</h3>
+
+                <p>
+                    Your prediction history will appear here
+                    after you make a prediction.
+                </p>
+
+                <a href="/dashboard">
+                    Make Prediction
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
