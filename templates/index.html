@@ -11,6 +11,56 @@
 </head>
 
 <body>
+   <!-- =========================================
+       LIVE SPACE / 3D MOON BACKGROUND
+  ========================================== -->
+
+  <div class="space-scene">
+
+    <div class="stars stars-1"></div>
+    <div class="stars stars-2"></div>
+    <div class="stars stars-3"></div>
+
+    <div class="space-glow"></div>
+
+    <!-- Orbit -->
+    <div class="moon-orbit">
+      <div class="orbit-planet"></div>
+    </div>
+
+    <!-- Moon -->
+    <div class="moon-wrapper">
+
+      <div class="moon-glow"></div>
+
+      <div class="moon">
+        <div class="moon-crater crater-1"></div>
+        <div class="moon-crater crater-2"></div>
+        <div class="moon-crater crater-3"></div>
+        <div class="moon-crater crater-4"></div>
+        <div class="moon-crater crater-5"></div>
+        <div class="moon-crater crater-6"></div>
+      </div>
+
+    </div>
+
+    <!-- Floating particles -->
+    <div class="space-particles">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+  </div>
+
+
   <div class="dashboard">
 
     <!-- Sidebar -->
@@ -115,6 +165,34 @@
   </div>
 
 </header>
+    <!-- Welcome Section -->
+<section class="welcome-panel">
+
+  <div class="welcome-content">
+    <span class="welcome-badge">✨ AI STUDENT ANALYTICS</span>
+
+    <h2>
+      Welcome back, {{ user.name }} 👋
+    </h2>
+
+    <p>
+      Track your academic progress and improve your performance
+      with AI-powered student insights.
+    </p>
+
+    <a href="#prediction" class="welcome-btn">
+      🎯 Make Prediction
+    </a>
+  </div>
+
+  <div class="welcome-visual">
+    <div class="welcome-moon"></div>
+  </div>
+
+</section>
+
+
+
 
       <!-- Stats -->
       <section class="stats-grid" aria-label="Key metrics">
@@ -150,6 +228,220 @@
           </div>
         </div>
       </section>
+
+      <!-- =========================================
+     RECENT PREDICTIONS + MINI ANALYTICS
+========================================== -->
+<section class="dashboard-overview">
+
+  <!-- Recent Predictions -->
+  <div class="card recent-predictions">
+
+    <div class="card-header">
+      <div>
+        <h2>🕘 Recent Predictions</h2>
+        <p>Your latest AI performance predictions.</p>
+      </div>
+
+      <span class="badge">LIVE</span>
+    </div>
+
+    <div class="prediction-list">
+
+      <div class="prediction-item">
+        <div class="prediction-icon purple">
+          🎯
+        </div>
+
+        <div class="prediction-info">
+          <strong>Academic Performance</strong>
+          <span>Today • 10:42 AM</span>
+        </div>
+
+        <div class="prediction-score">
+          <strong>82</strong>
+          <span>/100</span>
+        </div>
+
+        <div class="prediction-status good">
+          Excellent
+        </div>
+      </div>
+
+
+      <div class="prediction-item">
+        <div class="prediction-icon blue">
+          📚
+        </div>
+
+        <div class="prediction-info">
+          <strong>Academic Performance</strong>
+          <span>Yesterday • 06:18 PM</span>
+        </div>
+
+        <div class="prediction-score">
+          <strong>76</strong>
+          <span>/100</span>
+        </div>
+
+        <div class="prediction-status average">
+          Good
+        </div>
+      </div>
+
+
+      <div class="prediction-item">
+        <div class="prediction-icon green">
+          📊
+        </div>
+
+        <div class="prediction-info">
+          <strong>Academic Performance</strong>
+          <span>Aug 20 • 09:31 AM</span>
+        </div>
+
+        <div class="prediction-score">
+          <strong>88</strong>
+          <span>/100</span>
+        </div>
+
+        <div class="prediction-status good">
+          Excellent
+        </div>
+      </div>
+
+
+      <div class="prediction-item">
+        <div class="prediction-icon orange">
+          📝
+        </div>
+
+        <div class="prediction-info">
+          <strong>Academic Performance</strong>
+          <span>Aug 18 • 04:52 PM</span>
+        </div>
+
+        <div class="prediction-score">
+          <strong>69</strong>
+          <span>/100</span>
+        </div>
+
+        <div class="prediction-status warning">
+          Average
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <!-- Mini Graph -->
+  <div class="card mini-analytics">
+
+    <div class="card-header">
+      <div>
+        <h2>📈 Performance Trend</h2>
+        <p>Recent prediction activity.</p>
+      </div>
+
+      <span class="trend-up">
+        ↗ 12.5%
+      </span>
+    </div>
+
+    <div class="mini-chart">
+
+      <div class="chart-grid">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <svg
+        class="performance-line"
+        viewBox="0 0 500 180"
+        preserveAspectRatio="none"
+        aria-label="Performance trend graph"
+      >
+
+        <defs>
+          <linearGradient
+            id="chartGradient"
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop offset="0%" stop-opacity="0.35"/>
+            <stop offset="100%" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+
+        <path
+          class="chart-area"
+          d="
+            M0 145
+            C50 135 65 120 105 128
+            C145 136 155 92 200 105
+            C245 118 250 78 295 88
+            C340 98 350 52 390 65
+            C430 78 450 35 500 45
+            L500 180
+            L0 180 Z
+          "
+        />
+
+        <path
+          class="chart-line"
+          d="
+            M0 145
+            C50 135 65 120 105 128
+            C145 136 155 92 200 105
+            C245 118 250 78 295 88
+            C340 98 350 52 390 65
+            C430 78 450 35 500 45
+          "
+        />
+
+        <circle cx="105" cy="128" r="5"/>
+        <circle cx="200" cy="105" r="5"/>
+        <circle cx="295" cy="88" r="5"/>
+        <circle cx="390" cy="65" r="5"/>
+        <circle cx="500" cy="45" r="5"/>
+
+      </svg>
+
+      <div class="chart-labels">
+        <span>Mon</span>
+        <span>Tue</span>
+        <span>Wed</span>
+        <span>Thu</span>
+        <span>Fri</span>
+      </div>
+
+    </div>
+
+    <div class="mini-chart-footer">
+      <div>
+        <span>Current Score</span>
+        <strong>82%</strong>
+      </div>
+
+      <div>
+        <span>Best Score</span>
+        <strong>88%</strong>
+      </div>
+
+      <div>
+        <span>Average</span>
+        <strong>79%</strong>
+      </div>
+    </div>
+
+  </div>
+
+</section>
 
       <!-- Prediction + Result -->
       <section class="content-grid" id="prediction" aria-label="Prediction">
@@ -270,6 +562,57 @@
           </div>
         </div>
       </section>
+      <section class="mini-stats-grid">
+
+  <div class="mini-stat-card">
+    <div class="mini-stat-top">
+      <span>📚</span>
+      <small>Study Consistency</small>
+    </div>
+
+    <strong>86%</strong>
+
+    <div class="mini-progress">
+      <div style="width: 86%;"></div>
+    </div>
+
+    <p>Great consistency this week</p>
+  </div>
+
+
+  <div class="mini-stat-card">
+    <div class="mini-stat-top">
+      <span>📅</span>
+      <small>Attendance Trend</small>
+    </div>
+
+    <strong>92%</strong>
+
+    <div class="mini-progress">
+      <div style="width: 92%;"></div>
+    </div>
+
+    <p>Attendance is improving</p>
+  </div>
+
+
+  <div class="mini-stat-card">
+    <div class="mini-stat-top">
+      <span>🎯</span>
+      <small>Prediction Confidence</small>
+    </div>
+
+    <strong>94%</strong>
+
+    <div class="mini-progress">
+      <div style="width: 94%;"></div>
+    </div>
+
+    <p>High confidence prediction</p>
+  </div>
+
+</section>
+
 
       <!-- Analysis -->
       <section class="card analysis-card" id="analysis" aria-label="Performance analysis">

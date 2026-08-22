@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 
-from sqlalchemy import Column, DateTime, Integer, String, Float,ForeignKey
+from sqlalchemy import Column, DateTime, Integer, String, Float,ForeignKey,Date
 
 from database import Base
 
@@ -33,6 +33,16 @@ class User(Base):
     password_hash = Column(
         String(255),
         nullable=False
+    )
+    
+    profile_image = Column(
+        String(500),
+        nullable=True
+    )
+    
+    date_of_birth = Column(
+        Date,
+        nullable=True
     )
 
     created_at = Column(

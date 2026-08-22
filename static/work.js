@@ -37,6 +37,339 @@ const progressMap = {
   },
 };
 
+/* =========================================================
+   NEW DASHBOARD ELEMENTS
+========================================================= */
+
+const predictionListEl =
+  document.querySelector(".prediction-list");
+
+const chartLineEl =
+  document.querySelector(".chart-line");
+
+const chartAreaEl =
+  document.querySelector(".chart-area");
+
+const chartCircles =
+  document.querySelectorAll(".performance-line circle");
+
+const currentScoreEl =
+  document.querySelector(".mini-chart-footer div:nth-child(1) strong");
+
+const bestScoreEl =
+  document.querySelector(".mini-chart-footer div:nth-child(2) strong");
+
+const averageScoreEl =
+  document.querySelector(".mini-chart-footer div:nth-child(3) strong");
+
+const miniStatCards =
+  document.querySelectorAll(".mini-stat-card");
+
+
+/* Keep recent prediction history */
+let predictionHistory = [];
+
+
+/* =========================================================
+   ADD RECENT PREDICTION
+========================================================= */
+
+function addRecentPrediction(score) {
+
+  if (!predictionListEl) return;
+
+  const now = new Date();
+
+  const time = now.toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  let status = "Average";
+  let statusClass = "warning";
+  let icon = "📝";
+  let iconClass = "orange";
+
+  if (score >= 85) {
+
+    status = "Excellent";
+    statusClass = "good";
+    icon = "🎯";
+    iconClass = "purple";
+
+  } else if (score >= 70) {
+
+    status = "Good";
+    statusClass = "average";
+    icon = "📚";
+    iconClass = "blue";
+
+  }
+
+  const prediction = {
+    score,
+    time,
+    status,
+    statusClass,
+    icon,
+    iconClass
+  };
+
+  predictionHistory.unshift(prediction);
+
+  /* Keep only latest 4 */
+  predictionHistory =
+    predictionHistory.slice(0, 4);
+
+  predictionListEl.innerHTML = "";
+
+  predictionHistory.forEach((item) => {
+
+    const row = document.createElement("div");
+
+    row.className = "prediction-item";
+
+    row.innerHTML = `
+      <div class="prediction-icon ${item.iconClass}">
+        ${item.icon}
+      </div>
+
+      <div class="prediction-info">
+        <strong>Academic Performance</strong>
+        <span>Just now • ${item.time}</span>
+      </div>
+
+      <div class="prediction-score">
+        <strong>${item.score.toFixed(1)}</strong>
+        <span>/100</span>
+      </div>
+
+      <div class="prediction-status ${item.statusClass}">
+        ${item.status}
+      </div>
+    `;
+
+    predictionListEl.appendChild(row);
+
+  });
+
+}
+
+
+/* =========================================================
+   UPDATE PERFORMANCE GRAPH
+========================================================= */
+
+function updatePerformanceGraph(score) {
+
+  predictionHistory
+    .slice()
+    .reverse()
+    .forEach(() => {});
+
+  const scores =
+    predictionHistory
+      .map(item => item.score)
+      .reverse();
+
+  if (scores.length === 0) return;
+
+  const points = [];
+
+  const width = 500;
+  const height = 140;
+
+  scores.forEach((value, index) => {
+
+    const x =
+      scores.length === 1
+        ? 250
+        : (index / (scores.length - 1)) * width;
+
+    const y =
+      height - ((value / 100) * 110);
+
+    points.push({
+      x,
+      y
+    });
+
+  });
+
+  if (points.length === 1) {
+
+    points.push({
+      x: 500,
+      y: points[0].y
+    });
+
+  }
+
+  let path = `M ${points[0].x} ${points[0].y}`;
+
+  for (let i = 1; i < points.length; i++) {
+
+    const previous = points[i - 1];
+    const current = points[i];
+
+    const controlX =
+      (previous.x + current.x) / 2;
+
+    path += `
+      C
+      ${controlX} ${previous.y},
+      ${controlX} ${current.y},
+      ${current.x} ${current.y}
+    `;
+
+  }
+
+  if (chartLineEl) {
+
+    chartLineEl.setAttribute(
+      "d",
+      path
+    );
+
+  }
+
+
+  if (chartAreaEl) {
+
+    const areaPath =
+      `${path}
+       L ${points[points.length - 1].x} 180
+       L 0 180
+       Z`;
+
+    chartAreaEl.setAttribute(
+      "d",
+      areaPath
+    );
+
+  }
+
+
+  /* Update graph dots */
+
+  chartCircles.forEach((circle, index) => {
+
+    if (!points[index]) {
+
+      circle.style.display = "none";
+      return;
+
+    }
+
+    circle.style.display = "block";
+
+    circle.setAttribute(
+      "cx",
+      points[index].x
+    );
+
+    circle.setAttribute(
+      "cy",
+      points[index].y
+    );
+
+  });
+
+
+  /* Footer statistics */
+
+  const maxScore =
+    Math.max(...scores);
+
+  const averageScore =
+    scores.reduce(
+      (sum, value) => sum + value,
+      0
+    ) / scores.length;
+
+  if (currentScoreEl) {
+    currentScoreEl.textContent =
+      `${score.toFixed(1)}%`;
+  }
+
+  if (bestScoreEl) {
+    bestScoreEl.textContent =
+      `${maxScore.toFixed(1)}%`;
+  }
+
+  if (averageScoreEl) {
+    averageScoreEl.textContent =
+      `${averageScore.toFixed(1)}%`;
+  }
+
+}
+
+
+/* =========================================================
+   UPDATE MINI STAT CARDS
+========================================================= */
+
+function updateMiniStats(data, score) {
+
+  if (!miniStatCards.length) return;
+
+  const {
+    study_hours,
+    attendance
+  } = data;
+
+
+  /* Study consistency */
+
+  const studyConsistency =
+    clamp((study_hours / 10) * 100);
+
+
+  /* Attendance */
+
+  const attendanceScore =
+    clamp(attendance);
+
+
+  /* Prediction confidence */
+
+  const confidence =
+    clamp(
+      85 +
+      Math.abs(score - 75) * 0.5
+    );
+
+
+  const values = [
+    studyConsistency,
+    attendanceScore,
+    confidence
+  ];
+
+
+  miniStatCards.forEach((card, index) => {
+
+    const value = values[index];
+
+    const number =
+       card.querySelector(":scope > strong");
+
+    const progress =
+      card.querySelector(".mini-progress div");
+
+    if (number) {
+      number.textContent =
+        `${Math.round(value)}%`;
+    }
+
+    if (progress) {
+      progress.style.width =
+        `${value}%`;
+    }
+
+  });
+
+}
 
 function getNumberValue(id) {
   const input = document.getElementById(id);
@@ -266,6 +599,9 @@ if (form) {
       updateScore(score);
       updateDashboard(studentData);
       generateSuggestions(studentData);
+      addRecentPrediction(score);
+      updatePerformanceGraph(score);
+      updateMiniStats(studentData, score);
 
     } catch (error) {
       console.error(error);
@@ -349,3 +685,129 @@ if (userMenu && userAvatarBtn) {
     });
 
 }
+
+/* =========================================================
+   LIVE MOON MOUSE PARALLAX
+========================================================= */
+
+document.addEventListener("mousemove", function (event) {
+
+    const moon = document.querySelector(".moon-wrapper");
+
+    if (!moon) return;
+
+    const x =
+        (event.clientX / window.innerWidth - 0.5) * 35;
+
+    const y =
+        (event.clientY / window.innerHeight - 0.5) * 25;
+
+    document.documentElement.style.setProperty(
+        "--moon-x",
+        `${x}px`
+    );
+
+    document.documentElement.style.setProperty(
+        "--moon-y",
+        `${y}px`
+    );
+
+});
+
+
+/* =========================================================
+   RESET MOON POSITION WHEN MOUSE LEAVES
+========================================================= */
+
+document.addEventListener("mouseleave", function () {
+
+    document.documentElement.style.setProperty(
+        "--moon-x",
+        "0px"
+    );
+
+    document.documentElement.style.setProperty(
+        "--moon-y",
+        "0px"
+    );
+
+});
+
+/* =========================================================
+   🌕 CINEMATIC SPACE PARALLAX
+========================================================= */
+
+document.addEventListener("mousemove", function (e) {
+
+    const x =
+        (e.clientX / window.innerWidth) - 0.5;
+
+    const y =
+        (e.clientY / window.innerHeight) - 0.5;
+
+
+    /* Moon movement */
+
+    document.documentElement.style.setProperty(
+        "--moon-x",
+        `${x * 28}px`
+    );
+
+    document.documentElement.style.setProperty(
+        "--moon-y",
+        `${y * 20}px`
+    );
+
+
+    /* Moon 3D tilt */
+
+    document.documentElement.style.setProperty(
+        "--moon-rotate-y",
+        `${x * 5}deg`
+    );
+
+    document.documentElement.style.setProperty(
+        "--moon-rotate-x",
+        `${-y * 5}deg`
+    );
+
+
+    /* Star depth */
+
+    const stars1 =
+        document.querySelector(".stars-1");
+
+    const stars2 =
+        document.querySelector(".stars-2");
+
+    const stars3 =
+        document.querySelector(".stars-3");
+
+
+    if (stars1) {
+        stars1.style.marginLeft =
+            `${x * 8}px`;
+
+        stars1.style.marginTop =
+            `${y * 8}px`;
+    }
+
+
+    if (stars2) {
+        stars2.style.marginLeft =
+            `${x * 16}px`;
+
+        stars2.style.marginTop =
+            `${y * 16}px`;
+    }
+
+
+    if (stars3) {
+        stars3.style.marginLeft =
+            `${x * 25}px`;
+
+        stars3.style.marginTop =
+            `${y * 25}px`;
+    }
+
+});

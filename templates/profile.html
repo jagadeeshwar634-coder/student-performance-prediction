@@ -16,10 +16,45 @@
 </head>
 
 <body>
+     <!-- GOJO POWER EFFECT -->
+    <div id="gojo-power">
 
-    <!-- =========================
+        <div class="power blue-power"></div>
+
+        <div class="power red-power"></div>
+
+        <div class="hollow-purple">
+            <div class="purple-core"></div>
+        </div>
+
+        <div class="power-cursor"></div>
+
+    </div>
+
+    <!-- =====================================================
+         GOJO 3D LIVE BACKGROUND
+    ====================================================== -->
+
+    <div class="space-background">
+
+        <div class="grid-floor"></div>
+
+        <div class="glow-orb orb-one"></div>
+        <div class="glow-orb orb-two"></div>
+        <div class="glow-orb orb-three"></div>
+
+        <div class="energy-ring ring-one"></div>
+        <div class="energy-ring ring-two"></div>
+        <div class="energy-ring ring-three"></div>
+
+        <div id="particles"></div>
+
+    </div>
+
+
+    <!-- =====================================================
          TOPBAR
-    ========================== -->
+    ====================================================== -->
 
     <header class="profile-topbar">
 
@@ -28,8 +63,15 @@
         </a>
 
         <div class="profile-page-title">
+
+            <span class="topbar-badge">
+                ✦ STUDENT AI
+            </span>
+
             <h1>User Profile</h1>
+
             <p>Profile & prediction history</p>
+
         </div>
 
         <a href="/logout" class="logout-btn">
@@ -39,33 +81,52 @@
     </header>
 
 
-    <!-- =========================
+    <!-- =====================================================
          MAIN CONTENT
-    ========================== -->
+    ====================================================== -->
 
     <main class="profile-container">
 
 
-        <!-- USER HEADER -->
+        <!-- =================================================
+             USER HERO
+        ================================================== -->
 
         <section class="profile-hero">
 
+            <div class="hero-glow"></div>
+
             <div class="large-avatar">
-                👤
+
+                <div class="avatar-ring"></div>
+
+                <span>👤</span>
+
             </div>
 
             <div class="hero-user-info">
 
+                <span class="hero-label">
+                    ✦ PROFILE
+                </span>
+
                 <h2>{{ user.name }}</h2>
 
                 <p>{{ user.email }}</p>
+
+                <div class="hero-status">
+                    <span class="status-dot"></span>
+                    Account Active
+                </div>
 
             </div>
 
         </section>
 
 
-        <!-- PROFILE INFORMATION -->
+        <!-- =================================================
+             PROFILE INFORMATION
+        ================================================== -->
 
         <section class="profile-card">
 
@@ -76,65 +137,285 @@
                 </div>
 
                 <div>
+
                     <h2>Profile</h2>
-                    <p>Your account information</p>
+
+                    <p>Manage your account information</p>
+
                 </div>
 
             </div>
 
 
+            <!-- PROFILE DETAILS -->
+
             <div class="profile-details">
 
+
+                <!-- NAME -->
+
                 <div class="detail-box">
 
-                    <span>Name</span>
+                    <div class="detail-icon">
+                        👤
+                    </div>
 
-                    <strong>
-                        {{ user.name }}
-                    </strong>
+                    <div class="detail-content">
+
+                        <span>Name</span>
+
+                        <strong>
+                            {{ user.name }}
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
+                <!-- EMAIL -->
+
                 <div class="detail-box">
 
-                    <span>Email</span>
+                    <div class="detail-icon">
+                        ✉️
+                    </div>
 
-                    <strong>
-                        {{ user.email }}
-                    </strong>
+                    <div class="detail-content">
+
+                        <span>Email</span>
+
+                        <strong>
+                            {{ user.email }}
+                        </strong>
+
+                    </div>
 
                 </div>
 
 
+                <!-- DATE OF BIRTH -->
+
                 <div class="detail-box">
 
-                    <span>User ID</span>
+                    <div class="detail-icon">
+                        🎂
+                    </div>
 
-                    <strong>
-                        #{{ user.id }}
-                    </strong>
+                    <div class="detail-content">
+
+                        <span>Date of Birth</span>
+
+                        <strong>
+
+                            {% if user.date_of_birth %}
+
+                                {{ user.date_of_birth.strftime("%d %b %Y") }}
+
+                            {% else %}
+
+                                Not added
+
+                            {% endif %}
+
+                        </strong>
+
+                    </div>
 
                 </div>
+
+
+                <!-- USER ID -->
+
+                <div class="detail-box">
+
+                    <div class="detail-icon">
+                        🆔
+                    </div>
+
+                    <div class="detail-content">
+
+                        <span>User ID</span>
+
+                        <strong>
+                            #{{ user.id }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EDIT BUTTON -->
+
+            <div class="profile-action">
+
+                <button
+                    type="button"
+                    class="edit-profile-btn"
+                    onclick="openEditProfile()"
+                >
+                    ✏️ Edit Profile
+                </button>
 
             </div>
 
         </section>
 
 
-        <!-- PREDICTION HISTORY -->
+        <!-- =================================================
+             EDIT PROFILE MODAL
+        ================================================== -->
+
+        <div
+            id="editProfileModal"
+            class="modal-overlay"
+        >
+
+            <div class="edit-modal">
+
+                <button
+                    type="button"
+                    class="close-modal"
+                    onclick="closeEditProfile()"
+                >
+                    ×
+                </button>
+
+
+                <div class="modal-header">
+
+                    <div class="modal-icon">
+                        ✏️
+                    </div>
+
+                    <div>
+
+                        <h2>Edit Profile</h2>
+
+                        <p>Update your personal details</p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- UPDATE FORM -->
+
+                <form
+                    action="/profile/update"
+                    method="POST"
+                    class="profile-edit-form"
+                >
+
+
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            value="{{ user.name }}"
+                            placeholder="Enter your name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            value="{{ user.email }}"
+                            disabled
+                        >
+
+                        <small>
+                            Email cannot be changed.
+                        </small>
+
+                    </div>
+
+
+                    <!-- DOB -->
+
+                    <div class="form-group">
+
+                        <label for="date_of_birth">
+                            Date of Birth
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date_of_birth"
+                            name="date_of_birth"
+                            value="{% if user.date_of_birth %}{{ user.date_of_birth.strftime('%Y-%m-%d') }}{% endif %}"
+                        >
+
+                    </div>
+
+
+                    <!-- BUTTONS -->
+
+                    <div class="modal-actions">
+
+                        <button
+                            type="button"
+                            class="cancel-btn"
+                            onclick="closeEditProfile()"
+                        >
+                            Cancel
+                        </button>
+
+                        <button
+                            type="submit"
+                            class="save-profile-btn"
+                        >
+                            💾 Save Changes
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             PREDICTION HISTORY
+        ================================================== -->
 
         <section class="history-card">
+
 
             <div class="history-heading">
 
                 <div>
 
+                    <span class="history-label">
+                        ✦ PERFORMANCE
+                    </span>
+
                     <h2>📊 Prediction History</h2>
 
-                    <p>
-                        Your previous prediction results
-                    </p>
+                    <p>Select predictions you want to remove</p>
 
                 </div>
 
@@ -147,95 +428,157 @@
 
             {% if history %}
 
-            <div class="table-container">
-
-                <table>
-
-                    <thead>
-
-                        <tr>
-                            <th>Study</th>
-                            <th>Attendance</th>
-                            <th>Previous</th>
-                            <th>Assignment</th>
-                            <th>Sleep</th>
-                            <th>Predicted</th>
-                            <th>Date</th>
-                        </tr>
-
-                    </thead>
+            <form
+                action="/history/delete"
+                method="POST"
+                onsubmit="return confirmDeleteHistory()"
+            >
 
 
-                    <tbody>
+                <div class="history-actions">
 
-                        {% for item in history %}
+                    <button
+                        type="submit"
+                        class="delete-history-btn"
+                    >
+                        🗑️ Delete Selected
+                    </button>
 
-                        <tr>
+                </div>
 
-                            <td>
-                                {{ item.study_hours }} hrs
-                            </td>
 
-                            <td>
-                                {{ item.attendance }}%
-                            </td>
+                <div class="table-container">
 
-                            <td>
-                                {{ item.previous_score }}
-                            </td>
+                    <table>
 
-                            <td>
-                                {{ item.assignment_score }}
-                            </td>
+                        <thead>
 
-                            <td>
-                                {{ item.sleep_hours }} hrs
-                            </td>
+                            <tr>
 
-                            <td>
-                                <span class="score">
-                                    {{ item.predicted_score }}
-                                </span>
-                            </td>
+                                <th>Study</th>
+                                <th>Attendance</th>
+                                <th>Previous</th>
+                                <th>Assignment</th>
+                                <th>Sleep</th>
+                                <th>Predicted</th>
+                                <th>Date</th>
+                                <th>Select</th>
 
-                            <td>
-                                {{ item.created_at.strftime("%d %b %Y") }}
-                            </td>
+                            </tr>
 
-                        </tr>
+                        </thead>
 
-                        {% endfor %}
 
-                    </tbody>
+                        <tbody>
 
-                </table>
+                            {% for item in history %}
 
-            </div>
+                            <tr>
+
+                                <td>
+                                    {{ item.study_hours }}
+                                </td>
+
+                                <td>
+                                    {{ item.attendance }}%
+                                </td>
+
+                                <td>
+                                    {{ item.previous_score }}
+                                </td>
+
+                                <td>
+                                    {{ item.assignment_score }}
+                                </td>
+
+                                <td>
+                                    {{ item.sleep_hours }}
+                                </td>
+
+                                <td>
+
+                                    <span class="prediction-score">
+                                        {{ item.predicted_score }}
+                                    </span>
+
+                                </td>
+
+                                <td class="prediction-date">
+
+                                    {% if item.created_at %}
+
+                                        <div class="history-date">
+                                            {{ item.created_at.strftime("%d %b %Y") }}
+                                        </div>
+
+                                        <div class="history-time">
+                                            {{ item.created_at.strftime("%I:%M %p") }}
+                                        </div>
+
+                                    {% else %}
+
+                                        <div class="history-date">
+                                            —
+                                        </div>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td class="select-history">
+
+                                    <input
+                                        type="checkbox"
+                                        name="prediction_ids"
+                                        value="{{ item.id }}"
+                                        class="history-checkbox"
+                                    >
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </form>
+
 
             {% else %}
 
+
             <div class="empty-history">
 
-                <div>📊</div>
+                <div class="empty-history-icon">
+                    📭
+                </div>
 
-                <h3>No Predictions Yet</h3>
+                <h3>No Prediction History</h3>
 
                 <p>
-                    Your prediction history will appear here
-                    after you make a prediction.
+                    Your prediction results will appear here.
                 </p>
 
-                <a href="/dashboard">
-                    Make Prediction
-                </a>
-
             </div>
+
 
             {% endif %}
 
         </section>
 
     </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script src="{{ url_for('static', path='profile.js') }}"></script>
 
 </body>
 
