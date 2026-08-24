@@ -70,6 +70,7 @@ const miniStatCards =
 let predictionHistory = [];
 
 
+
 /* =========================================================
    ADD RECENT PREDICTION
 ========================================================= */
@@ -162,10 +163,7 @@ function addRecentPrediction(score) {
 
 function updatePerformanceGraph(score) {
 
-  predictionHistory
-    .slice()
-    .reverse()
-    .forEach(() => {});
+ 
 
   const scores =
     predictionHistory
@@ -224,30 +222,19 @@ function updatePerformanceGraph(score) {
 
   }
 
-  if (chartLineEl) {
+if (chartLineEl) {
+  chartLineEl.setAttribute("d", path);
+}
 
-    chartLineEl.setAttribute(
-      "d",
-      path
-    );
+if (chartAreaEl) {
+  const areaPath =
+    `${path}
+     L ${points[points.length - 1].x} 180
+     L 0 180
+     Z`;
 
-  }
-
-
-  if (chartAreaEl) {
-
-    const areaPath =
-      `${path}
-       L ${points[points.length - 1].x} 180
-       L 0 180
-       Z`;
-
-    chartAreaEl.setAttribute(
-      "d",
-      areaPath
-    );
-
-  }
+  chartAreaEl.setAttribute("d", areaPath);
+}
 
 
   /* Update graph dots */
@@ -331,13 +318,17 @@ function updateMiniStats(data, score) {
     clamp(attendance);
 
 
-  /* Prediction confidence */
 
-  const confidence =
-    clamp(
-      85 +
-      Math.abs(score - 75) * 0.5
-    );
+
+  
+
+/* Prediction confidence */
+
+const confidence =
+  Math.max(
+    0,
+    95 - Math.abs(score - 75) * 0.5
+  );
 
 
   const values = [
@@ -455,167 +446,225 @@ function updateScore(score) {
 }
 
 function generateSuggestions(data) {
-  const { study_hours, attendance, assignment_score, sleep_hours } = data;
-  const suggestions = [];
 
-  // Study hours
-  if (study_hours < 5) {
-    suggestions.push({
-      icon: "📚",
-      text: "Try increasing your daily study time to at least 5 hours.",
-    });
-  } else {
-    suggestions.push({
-      icon: "✅",
-      text: "Your study hours are good. Maintain your current consistency.",
-    });
-  }
+    if (!suggestionsListEl) return;
 
-  
-  if (attendance < 75) {
-    suggestions.push({
-      icon: "📅",
-      text: "Improve attendance. Try to maintain at least 75% attendance.",
-    });
-  } else if (attendance < 85) {
-    suggestions.push({
-      icon: "📈",
-      text: "Your attendance is acceptable. Aim for 85% or higher.",
-    });
-  } else {
-    suggestions.push({
-      icon: "🌟",
-      text: "Excellent attendance. Keep it above 85%.",
-    });
-  }
+    const {
+        study_hours,
+        attendance,
+        assignment_score,
+        sleep_hours
+    } = data;
 
-  
-  if (assignment_score < 60) {
-    suggestions.push({
-      icon: "📝",
-      text: "Spend more time on assignments to improve your score.",
-    });
-  } else {
-    suggestions.push({
-      icon: "✅",
-      text: "Good assignment performance. Continue submitting quality work.",
-    });
-  }
+    const suggestions = [];
 
- 
-  if (sleep_hours < 7) {
-    suggestions.push({
-      icon: "😴",
-      text: "Try getting 7–8 hours of sleep for better concentration.",
-    });
-  } else {
-    suggestions.push({
-      icon: "😴",
-      text: "Your sleep duration is healthy for maintaining concentration.",
-    });
-  }
+    // =====================================================
+    // STUDY HOURS
+    // =====================================================
 
-  suggestionsListEl.innerHTML = "";
+    if (study_hours < 5) {
 
-  for (const item of suggestions) {
-    const div = document.createElement("div");
-    div.className = "suggestion";
-    div.innerHTML = `<span>${item.icon}</span><p>${item.text}</p>`;
-    suggestionsListEl.appendChild(div);
-  }
+        suggestions.push({
+            icon: "📚",
+            text: "Try increasing your daily study time to at least 5 hours."
+        });
+
+    } else {
+
+        suggestions.push({
+            icon: "✅",
+            text: "Your study hours are good. Maintain your current consistency."
+        });
+
+    }
+
+
+    // =====================================================
+    // ATTENDANCE
+    // =====================================================
+
+    if (attendance < 75) {
+
+        suggestions.push({
+            icon: "📅",
+            text: "Improve attendance. Try to maintain at least 75% attendance."
+        });
+
+    } else if (attendance < 85) {
+
+        suggestions.push({
+            icon: "📈",
+            text: "Your attendance is acceptable. Aim for 85% or higher."
+        });
+
+    } else {
+
+        suggestions.push({
+            icon: "🌟",
+            text: "Excellent attendance. Keep it above 85%."
+        });
+
+    }
+
+
+    // =====================================================
+    // ASSIGNMENT
+    // =====================================================
+
+    if (assignment_score < 60) {
+
+        suggestions.push({
+            icon: "📝",
+            text: "Spend more time on assignments to improve your score."
+        });
+
+    } else {
+
+        suggestions.push({
+            icon: "✅",
+            text: "Good assignment performance. Continue submitting quality work."
+        });
+
+    }
+
+
+    // =====================================================
+    // SLEEP
+    // =====================================================
+
+    if (sleep_hours < 7) {
+
+        suggestions.push({
+            icon: "😴",
+            text: "Try getting 7–8 hours of sleep for better concentration."
+        });
+
+    } else {
+
+        suggestions.push({
+            icon: "😴",
+            text: "Your sleep duration is healthy for maintaining concentration."
+        });
+
+    }
+
+
+    // =====================================================
+    // DISPLAY SUGGESTIONS
+    // =====================================================
+
+    suggestionsListEl.innerHTML = "";
+
+    for (const item of suggestions) {
+
+        const div = document.createElement("div");
+
+        div.className = "suggestion";
+
+        div.innerHTML = `
+            <span>${item.icon}</span>
+            <p>${item.text}</p>
+        `;
+
+        suggestionsListEl.appendChild(div);
+    }
 }
-
 function resetDashboard() {
+
   form.reset();
+
   scoreValueEl.textContent = "--";
   scoreCardEl.textContent = "--";
   studyCardEl.textContent = "--";
   attendanceCardEl.textContent = "--";
   sleepCardEl.textContent = "--";
 
-  performanceLevelEl.textContent = "Waiting for prediction";
+  performanceLevelEl.textContent =
+    "Waiting for prediction";
+
   performanceLevelEl.style.color = "";
 
-  scoreMessageEl.textContent = "Enter student details and predict performance.";
+  scoreMessageEl.textContent =
+    "Enter student details and predict performance.";
 
-  scoreCircleEl.style.background =
-    "conic-gradient(#6366f1 0deg, #edf0f6 0deg)";
+  /* Reset score circle */
+  if (scoreCircleEl) {
+    scoreCircleEl.style.background =
+      "conic-gradient(#6366f1 0deg, #edf0f6 0deg)";
+  }
 
+  /* Reset suggestions */
+  if (suggestionsListEl) {
   suggestionsListEl.innerHTML = `
     <div class="suggestion">
       <span>💡</span>
       <p>Enter your details to receive personalized suggestions.</p>
     </div>
   `;
+}
 
+  /* Reset progress bars */
   for (const key of Object.keys(progressMap)) {
     setProgress(key, 0);
   }
+
+  /* Reset prediction history */
+  predictionHistory = [];
+
+  /* Reset graph */
+  /* Reset graph */
+
+if (chartLineEl) {
+  chartLineEl.setAttribute(
+    "d",
+    "M0 140 L500 140"
+  );
 }
 
-if (form) {
-  form.addEventListener("submit", async function (event) {
-    event.preventDefault();
+if (chartAreaEl) {
+  chartAreaEl.setAttribute(
+    "d",
+    "M0 140 L500 140 L500 180 L0 180 Z"
+  );
+}
 
-    const studentData = {
-      study_hours: getNumberValue("study_hours"),
-      attendance: getNumberValue("attendance"),
-      previous_score: getNumberValue("previous_score"),
-      assignment_score: getNumberValue("assignment_score"),
-      sleep_hours: getNumberValue("sleep_hours"),
-    };
-
-    if (
-      !Number.isFinite(studentData.study_hours) ||
-      !Number.isFinite(studentData.attendance) ||
-      !Number.isFinite(studentData.previous_score) ||
-      !Number.isFinite(studentData.assignment_score) ||
-      !Number.isFinite(studentData.sleep_hours)
-    ) {
-      alert("Please enter all student details.");
-      return;
-    }
-
-    predictButton.disabled = true;
-    predictButton.textContent = "⏳ Predicting...";
-
-    try {
-      const response = await fetch("/predict", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(studentData)
-      });
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      const score = clamp(Number(result.predicted_score));
-
-      updateScore(score);
-      updateDashboard(studentData);
-      generateSuggestions(studentData);
-      addRecentPrediction(score);
-      updatePerformanceGraph(score);
-      updateMiniStats(studentData, score);
-
-    } catch (error) {
-      console.error(error);
-      scoreMessageEl.textContent =
-        "❌ Unable to connect to prediction API.";
-    }
-
-    predictButton.disabled = false;
-    predictButton.textContent = "🎯 Predict Performance";
+  /* Hide graph dots */
+  chartCircles.forEach(circle => {
+    circle.style.display = "none";
   });
-}
 
-if (resetButton) {
-  resetButton.addEventListener("click", resetDashboard);
+  /* Reset footer */
+  if (currentScoreEl) {
+    currentScoreEl.textContent = "--";
+  }
+
+  if (bestScoreEl) {
+    bestScoreEl.textContent = "--";
+  }
+
+  if (averageScoreEl) {
+    averageScoreEl.textContent = "--";
+  }
+
+  /* Reset mini stats */
+  miniStatCards.forEach(card => {
+
+    const number =
+      card.querySelector(":scope > strong");
+
+    const progress =
+      card.querySelector(".mini-progress div");
+
+    if (number) {
+      number.textContent = "--";
+    }
+
+    if (progress) {
+      progress.style.width = "0%";
+    }
+
+  });
+
 }
 /* ========================================
    USER PROFILE DROPDOWN
@@ -685,94 +734,33 @@ if (userMenu && userAvatarBtn) {
     });
 
 }
-
-/* =========================================================
-   LIVE MOON MOUSE PARALLAX
-========================================================= */
-
 document.addEventListener("mousemove", function (event) {
 
-    const moon = document.querySelector(".moon-wrapper");
-
-    if (!moon) return;
-
     const x =
-        (event.clientX / window.innerWidth - 0.5) * 35;
+        (event.clientX / window.innerWidth) - 0.5;
 
     const y =
-        (event.clientY / window.innerHeight - 0.5) * 25;
+        (event.clientY / window.innerHeight) - 0.5;
 
     document.documentElement.style.setProperty(
-        "--moon-x",
-        `${x}px`
+        "--earth-x",
+        `${x * 30}px`
     );
 
     document.documentElement.style.setProperty(
-        "--moon-y",
-        `${y}px`
-    );
-
-});
-
-
-/* =========================================================
-   RESET MOON POSITION WHEN MOUSE LEAVES
-========================================================= */
-
-document.addEventListener("mouseleave", function () {
-
-    document.documentElement.style.setProperty(
-        "--moon-x",
-        "0px"
+        "--earth-y",
+        `${y * 22}px`
     );
 
     document.documentElement.style.setProperty(
-        "--moon-y",
-        "0px"
-    );
-
-});
-
-/* =========================================================
-   🌕 CINEMATIC SPACE PARALLAX
-========================================================= */
-
-document.addEventListener("mousemove", function (e) {
-
-    const x =
-        (e.clientX / window.innerWidth) - 0.5;
-
-    const y =
-        (e.clientY / window.innerHeight) - 0.5;
-
-
-    /* Moon movement */
-
-    document.documentElement.style.setProperty(
-        "--moon-x",
-        `${x * 28}px`
+        "--earth-rotate-y",
+        `${x * 6}deg`
     );
 
     document.documentElement.style.setProperty(
-        "--moon-y",
-        `${y * 20}px`
+        "--earth-rotate-x",
+        `${-y * 6}deg`
     );
-
-
-    /* Moon 3D tilt */
-
-    document.documentElement.style.setProperty(
-        "--moon-rotate-y",
-        `${x * 5}deg`
-    );
-
-    document.documentElement.style.setProperty(
-        "--moon-rotate-x",
-        `${-y * 5}deg`
-    );
-
-
-    /* Star depth */
 
     const stars1 =
         document.querySelector(".stars-1");
@@ -783,31 +771,19 @@ document.addEventListener("mousemove", function (e) {
     const stars3 =
         document.querySelector(".stars-3");
 
-
     if (stars1) {
-        stars1.style.marginLeft =
-            `${x * 8}px`;
-
-        stars1.style.marginTop =
-            `${y * 8}px`;
+        stars1.style.transform =
+            `translate(${x * 8}px, ${y * 8}px)`;
     }
-
 
     if (stars2) {
-        stars2.style.marginLeft =
-            `${x * 16}px`;
-
-        stars2.style.marginTop =
-            `${y * 16}px`;
+        stars2.style.transform =
+            `translate(${x * 16}px, ${y * 16}px)`;
     }
 
-
     if (stars3) {
-        stars3.style.marginLeft =
-            `${x * 25}px`;
-
-        stars3.style.marginTop =
-            `${y * 25}px`;
+        stars3.style.transform =
+            `translate(${x * 25}px, ${y * 25}px)`;
     }
 
 });

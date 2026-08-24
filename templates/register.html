@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
 
     <meta
@@ -10,7 +9,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Create Account | Register</title>
+    <title>StudentAI — Create Account</title>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
@@ -21,183 +20,345 @@
         rel="stylesheet"
         href="{{ url_for('static', path='register.css') }}"
     >
-
 </head>
 
-<body>
 
-    <div class="login-wrapper">
+<body class="register-body">
 
-        <div class="login-card">
+    <!-- =====================================================
+         LIVE AI BACKGROUND
+    ====================================================== -->
 
-            <!-- Logo -->
-            <div class="logo">
-                🚀
-            </div>
+    <div class="ai-background">
 
-
-            <!-- Header -->
-            <h1>
-                Get Started
-            </h1>
-
-            <p class="welcome">
-                Create a new account
-            </p>
-
-            <p class="subtitle">
-                Enter your details to register and start exploring.
-            </p>
+        <div class="ai-glow blue-glow"></div>
+        <div class="ai-glow purple-glow"></div>
+        <div class="ai-glow red-glow"></div>
 
 
-            <!-- Registration Form -->
-            <form
-                id="registerForm"
-                method="POST"
-                action="/register"
-            >
+        <div class="particles">
 
-                <!-- Name -->
-                <div class="input-group">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
 
-                    <label for="name">
-                        Full Name
-                    </label>
-
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your name"
-                        required
-                        autocomplete="name"
-                    >
-
-                </div>
+        </div>
 
 
-                <!-- Email -->
-                <div class="input-group">
+        <!-- 3D AI CORE -->
 
-                    <label for="email">
-                        Email Address
-                    </label>
+        <div class="ai-core">
 
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email"
-                        required
-                        autocomplete="email"
-                    >
+            <div class="core-ring ring-one"></div>
+            <div class="core-ring ring-two"></div>
+            <div class="core-ring ring-three"></div>
 
-                </div>
+            <div class="ai-orb">
 
+                <div class="orb-light"></div>
 
-                <!-- Password -->
-                <div class="input-group">
-
-                    <label for="password">
-                        Password
-                    </label>
-
-                    <div class="password-box">
-
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Create a password"
-                            required
-                            autocomplete="new-password"
-                        >
-
-                        <button
-                            type="button"
-                            id="togglePassword"
-                            class="eye-btn"
-                            aria-label="Toggle password visibility"
-                        >
-                            👁
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Confirm Password -->
-                <div class="input-group">
-
-                    <label for="confirmPassword">
-                        Confirm Password
-                    </label>
-
-                    <div class="password-box">
-
-                        <input
-                            type="password"
-                            id="confirmPassword"
-                            placeholder="Confirm your password"
-                            required
-                            autocomplete="new-password"
-                        >
-
-                        <button
-                            type="button"
-                            id="toggleConfirmPassword"
-                            class="eye-btn"
-                            aria-label="Toggle confirm password visibility"
-                        >
-                            👁
-                        </button>
-
-                    </div>
-
-                </div>
-
-
-                <!-- Register Button -->
-                <button
-                    type="submit"
-                    class="register-btn"
-                >
-                    Create Account
-                </button>
-
-
-                <!-- Message -->
-                <p id="message"></p>
-
-            </form>
-
-
-            <!-- Divider -->
-            <div class="divider">
-                or
-            </div>
-
-
-            <!-- Login -->
-            <div class="signup">
-
-                Already have an account?
-
-                <a href="/">
-                    Login
-                </a>
+                <span class="ai-symbol">
+                    AI
+                </span>
 
             </div>
 
         </div>
 
+
+        <div class="ai-floating-text">
+            STUDENT AI
+            <br>
+            <strong>AI SYSTEM ONLINE</strong>
+        </div>
+
     </div>
 
 
+    <!-- =====================================================
+         REGISTER PAGE
+    ====================================================== -->
+
+    <main class="register-wrapper">
+
+        <section class="register-card">
+
+
+            <!-- =================================================
+                 LEFT AI VISUAL
+            ================================================== -->
+
+            <div class="register-visual">
+
+                <div class="visual-content">
+
+                    <div class="mini-orb">
+                        <span>AI</span>
+                    </div>
+
+
+                    <h1>
+                        Student<span>AI</span>
+                    </h1>
+
+
+                    <p>
+                        Learn smarter.<br>
+                        Predict better.<br>
+                        Achieve more.
+                    </p>
+
+
+                    <div class="ai-status">
+
+                        <span class="status-dot"></span>
+
+                        AI SYSTEM ONLINE
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT REGISTER CONTENT
+            ================================================== -->
+
+            <div class="register-content">
+
+
+                <!-- Header -->
+
+                <div class="register-header">
+
+                    <div class="brand-icon">
+                        🚀
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Create Account
+                        </h2>
+
+                        <p>
+                            Join StudentAI and start your journey
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Registration Form -->
+
+                <form
+                    id="registerForm"
+                    method="POST"
+                    action="/register"
+                >
+
+
+                    <!-- Full Name -->
+
+                    <div class="input-group">
+
+                        <label for="name">
+                            Full Name
+                        </label>
+
+                        <div class="input-box">
+
+                            <span class="input-icon">
+                                👤
+                            </span>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your name"
+                                required
+                                autocomplete="name"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Email -->
+
+                    <div class="input-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-box">
+
+                            <span class="input-icon">
+                                ✉
+                            </span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                                autocomplete="email"
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="input-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-box">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                required
+                                autocomplete="new-password"
+                            >
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="eye-btn"
+                                aria-label="Toggle password visibility"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Confirm Password -->
+
+                    <div class="input-group">
+
+                        <label for="confirmPassword">
+                            Confirm Password
+                        </label>
+
+                        <div class="input-box">
+
+                            <span class="input-icon">
+                                🔐
+                            </span>
+
+                            <input
+                                type="password"
+                                id="confirmPassword"
+                                placeholder="Confirm your password"
+                                required
+                                autocomplete="new-password"
+                            >
+
+                            <button
+                                type="button"
+                                id="toggleConfirmPassword"
+                                class="eye-btn"
+                                aria-label="Toggle confirm password visibility"
+                            >
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Register Button -->
+
+                    <button
+                        type="submit"
+                        class="register-btn"
+                    >
+
+                        <span>
+                            CREATE ACCOUNT
+                        </span>
+
+                        <span>
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <!-- Message -->
+
+                    <p
+                        id="message"
+                        aria-live="polite"
+                    ></p>
+
+
+                </form>
+
+
+                <!-- Divider -->
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+
+                <!-- Login -->
+
+                <div class="signup">
+
+                    Already have an account?
+
+                    <a href="/">
+                        Login
+                    </a>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+    </main>
+
+
     <!-- Register JavaScript -->
+
     <script
-        src="{{ url_for('static', path='register.js') }}?v=2"
+        src="{{ url_for('static', path='register.js') }}?v=3"
     ></script>
 
 </body>

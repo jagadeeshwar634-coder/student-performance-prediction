@@ -3,100 +3,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>StudentAI — Secure Login</title>
-    <!-- Preconnect for performance -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="stylesheet" href="{{ url_for('static', path='login.css') }}">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', path='login.css') }}">
 </head>
+
 <body class="login-body">
 
-    <main class="login-wrapper">
-        <section class="login-card" aria-labelledby="login-title">
-            
-            <!-- Brand Header -->
-            <div class="login-header">
-                <span class="logo" role="img" aria-label="Graduation Cap">🎓</span>
-                <h1 id="login-title">StudentAI</h1>
-                <p class="welcome">Welcome Back 👋</p>
-                <p class="subtitle">Log in to access your student performance dashboard</p>
-            </div>
+    <!-- =====================================================
+         INTRO VIDEO
+    ====================================================== -->
 
-            <!-- Login Form -->
-            <form id="loginForm" novalidate>
+   <div id="introScreen">
 
-                <div class="input-group">
-    <label for="email">Email Address</label>
+    <video id="introVideo" autoplay muted playsinline>
+        <source
+            src="{{ url_for('static', path='intro4.mp4') }}"
+            type="video/mp4">
+    </video>
 
-    <input 
-       
-    type="email" 
-    id="email" 
-    name="email"
-    placeholder="name@student.edu"
-    autocomplete="off"
-    required
->
-    
-</div>
-
-<div class="input-group">
-    <label for="password">Password</label>
-
-    <div class="password-box">
-
-        <input 
-            type="password" 
-            id="password" 
-            name="password"
-            placeholder="Enter your password"
-            autocomplete="off"
-            required
-        >
-
-        <button 
-            type="button" 
-            id="togglePassword" 
-            class="eye-btn"
-            aria-label="Show password"
-        >
-            👁️
-        </button>
-
+    <div class="intro-overlay">
+        <h1></h1>
+        <p></p>
     </div>
+
+    <button id="startIntro" type="button">
+        🔊 TAP TO START
+    </button>
+
 </div>
 
-                <div class="login-options">
-                    <label class="remember" for="remember">
-                        <input type="checkbox" id="remember" name="remember">
-                        <span>Remember me</span>
-                    </label>
-                    <a href="/forgot-password" class="forgot">Forgot Password?</a>
+
+    <!-- =====================================================
+         STUDENT AI LIVE BACKGROUND
+    ====================================================== -->
+
+    <div class="ai-background">
+
+        <!-- Background glow -->
+        <div class="ai-glow blue-glow"></div>
+        <div class="ai-glow purple-glow"></div>
+        <div class="ai-glow red-glow"></div>
+
+        <!-- Floating particles -->
+        <div class="particles">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- 3D StudentAI Core -->
+        <div class="ai-core">
+
+            <div class="core-ring ring-one"></div>
+            <div class="core-ring ring-two"></div>
+            <div class="core-ring ring-three"></div>
+
+            <div class="ai-orb">
+
+                <div class="orb-light"></div>
+
+                <div class="ai-symbol">
+                    AI
                 </div>
 
-                <button type="submit" class="login-btn">
-                    <span>Login</span>
-                </button>
-
-                <!-- Dynamic feedback message container -->
-                <div id="message" role="alert" aria-live="polite"></div>
-
-            </form>
-
-            <div class="divider">
-                <span>OR</span>
             </div>
 
-            <footer class="login-footer">
-                <p class="signup">
-                    Don't have an account? 
-                    <a href="/register">Create Account</a>
-                </p>
-            </footer>
+        </div>
+
+        <!-- Floating text -->
+        <div class="ai-floating-text">
+            <span>STUDENT</span>
+            <strong>AI</strong>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         LOGIN PAGE
+    ====================================================== -->
+
+    <main id="loginPage" class="login-wrapper">
+
+        <section class="login-card" aria-labelledby="login-title">
+
+
+            <!-- =================================================
+                 LEFT SIDE — STUDENT AI
+            ================================================== -->
+
+            <div class="login-visual">
+
+                <div class="visual-content">
+
+                    <div class="mini-orb">
+                        <span>AI</span>
+                    </div>
+
+                    <h1>
+                        Student<span>AI</span>
+                    </h1>
+
+                    <p>
+                        Learn smarter.<br>
+                        Predict better.<br>
+                        Achieve more.
+                    </p>
+
+                    <div class="ai-status">
+                        <span class="status-dot"></span>
+                        AI SYSTEM ONLINE
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 RIGHT SIDE — LOGIN FORM
+            ================================================== -->
+
+            <div class="login-content">
+
+                <!-- Brand -->
+                <div class="login-header">
+
+                    <div class="brand-icon">
+                        🎓
+                    </div>
+
+                    <div>
+                        <h2 id="login-title">
+                            Welcome Back
+                        </h2>
+
+                        <p>
+                            Sign in to your StudentAI account
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <!-- Login Form -->
+                <form id="loginForm" novalidate>
+
+
+                    <!-- Email -->
+                    <div class="input-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-box">
+
+                            <span class="input-icon">
+                                ✉
+                            </span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="name@student.edu"
+                                autocomplete="off"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Password -->
+                    <div class="input-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-box">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                autocomplete="off"
+                                required
+                            >
+
+                            <button
+                                type="button"
+                                id="togglePassword"
+                                class="eye-btn"
+                                aria-label="Show password">
+                                👁️
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Options -->
+                    <div class="login-options">
+
+                        <label
+                            class="remember"
+                            for="remember">
+
+                            <input
+                                type="checkbox"
+                                id="remember"
+                                name="remember"
+                            >
+
+                            <span>
+                                Remember me
+                            </span>
+
+                        </label>
+
+                        <a
+                            href="/forgot-password"
+                            class="forgot">
+                            Forgot Password?
+                        </a>
+
+                    </div>
+
+
+                    <!-- Login -->
+                    <button
+                        type="submit"
+                        class="login-btn">
+
+                        <span>
+                            LOGIN
+                        </span>
+
+                        <span class="btn-arrow">
+                            →
+                        </span>
+
+                    </button>
+
+
+                    <!-- Message -->
+                    <div
+                        id="message"
+                        role="alert"
+                        aria-live="polite">
+                    </div>
+
+                </form>
+
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+
+                <!-- Register -->
+                <footer class="login-footer">
+
+                    <p class="signup">
+
+                        Don't have an account?
+
+                        <a href="/register">
+                            Create Account
+                        </a>
+
+                    </p>
+
+                </footer>
+
+            </div>
 
         </section>
+
     </main>
 
-    <script src="{{ url_for('static', path='login.js') }}" defer></script>
+
+    <!-- =====================================================
+         JAVASCRIPT
+    ====================================================== -->
+
+    <script
+        src="{{ url_for('static', path='login.js') }}"
+        defer>
+    </script>
+
 </body>
 </html>
 
