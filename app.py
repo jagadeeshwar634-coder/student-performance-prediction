@@ -259,7 +259,7 @@ def login_user(
     password: str = Form(...),
     db: Session = Depends(get_db)
 ):
-
+    print("🔥 LOGIN ROUTE HIT")
     email = email.strip().lower()
 
     print("LOGIN EMAIL:", email)
