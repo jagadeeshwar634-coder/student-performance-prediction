@@ -299,6 +299,61 @@ def login_user(
         "name": user.name,
         "email": user.email
     }
+  # =========================
+# PROFILE PAGE
+# =========================
+
+@app.get("/profile")
+def profile(
+    request: Request,
+    db: Session = Depends(get_db)
+):
+
+    user_session = request.session.get("user")
+
+    # Check login
+    if not user_session:
+        return RedirectResponse(
+            url="/",
+            status_code=303
+        )
+
+    # Get latest user data from database
+    user = (
+        db.query(User)
+        .filter(User.id == user_session["id"])
+        .first()
+    )
+
+    if not user:
+        request.session.clear()
+
+        return RedirectResponse(
+            url="/",
+            status_code=303
+        )
+
+    # Get user's prediction history
+    history = (
+        db.query(PredictionHistory)
+        .filter(
+            PredictionHistory.user_id == user.id
+        )
+        .order_by(
+            PredictionHistory.created_at.desc()
+        )
+        .all()
+    )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="profile.html",
+        context={
+            "request": request,
+            "user": user,
+            "history": history
+        }
+    )   
  # =========================
 # UPDATE PROFILE
 # =========================
