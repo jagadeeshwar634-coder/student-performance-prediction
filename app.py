@@ -259,12 +259,12 @@ def login_user(
     password: str = Form(...),
     db: Session = Depends(get_db)
 ):
-    try:
-        print("🔥 LOGIN ROUTE HIT")
+    print("🔥🔥 LOGIN ROUTE HIT 🔥🔥")
 
+    try:
         email = email.strip().lower()
 
-        print("LOGIN EMAIL:", email)
+        print("EMAIL:", email)
         print("PASSWORD LENGTH:", len(password))
 
         user = (
@@ -273,11 +273,10 @@ def login_user(
             .first()
         )
 
-        print("DATABASE QUERY COMPLETED")
+        print("🔥 DATABASE QUERY DONE")
 
         if not user:
             print("❌ USER NOT FOUND")
-
             raise HTTPException(
                 status_code=401,
                 detail="Invalid email or password"
@@ -285,10 +284,18 @@ def login_user(
 
         print("✅ USER FOUND:", user.email)
 
-        password_valid = password_hash.verify(
-            password,
-            user.password_hash
-        )
+        try:
+            password_valid = password_hash.verify(
+                password,
+                user.password_hash
+            )
+        except Exception as password_error:
+            print("🔥 PASSWORD ERROR:", repr(password_error))
+
+            return {
+                "debug_error": str(password_error),
+                "error_type": type(password_error).__name__
+            }
 
         print("PASSWORD VALID:", password_valid)
 
@@ -316,7 +323,7 @@ def login_user(
         raise
 
     except Exception as e:
-        print("🔥 LOGIN ERROR:", repr(e))
+        print("🔥🔥 DATABASE/LOGIN ERROR:", repr(e))
 
         return {
             "debug_error": str(e),
