@@ -787,3 +787,161 @@ document.addEventListener("mousemove", function (event) {
     }
 
 });
+
+/* =========================================================
+   PREDICTION FORM SUBMIT
+========================================================= */
+
+if (form) {
+
+  form.addEventListener("submit", async function (event) {
+
+    event.preventDefault();
+
+    // Get input values
+    const data = {
+      study_hours: getNumberValue("study_hours"),
+      attendance: getNumberValue("attendance"),
+      previous_score: getNumberValue("previous_score"),
+      assignment_score: getNumberValue("assignment_score"),
+      sleep_hours: getNumberValue("sleep_hours")
+    };
+
+    // Validate inputs
+    if (
+      !Number.isFinite(data.study_hours) ||
+      !Number.isFinite(data.attendance) ||
+      !Number.isFinite(data.previous_score) ||
+      !Number.isFinite(data.assignment_score) ||
+      !Number.isFinite(data.sleep_hours)
+    ) {
+
+      alert("Please fill all student details.");
+
+      return;
+    }
+
+    // Validate ranges
+    if (data.attendance < 0 || data.attendance > 100) {
+      alert("Attendance must be between 0 and 100.");
+      return;
+    }
+
+    if (data.previous_score < 0 || data.previous_score > 100) {
+      alert("Previous score must be between 0 and 100.");
+      return;
+    }
+
+    if (data.assignment_score < 0 || data.assignment_score > 100) {
+      alert("Assignment score must be between 0 and 100.");
+      return;
+    }
+
+    if (data.sleep_hours < 0 || data.sleep_hours > 24) {
+      alert("Sleep hours must be between 0 and 24.");
+      return;
+    }
+
+    // Disable button while predicting
+    if (predictButton) {
+      predictButton.disabled = true;
+      predictButton.textContent = "⏳ Predicting...";
+    }
+
+    try {
+
+      console.log("📤 Sending prediction:", data);
+
+      const response = await fetch("/predict", {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+
+        body: JSON.stringify(data)
+
+      });
+
+      console.log("📥 Response status:", response.status);
+
+      const result = await response.json();
+
+      console.log("📥 Prediction response:", result);
+
+      // Handle API error
+      if (!response.ok) {
+
+        throw new Error(
+          result.detail ||
+          result.message ||
+          "Prediction failed"
+        );
+
+      }
+
+      // Get predicted score
+      const score = Number(result.predicted_score);
+
+      if (!Number.isFinite(score)) {
+        throw new Error("Invalid prediction score received.");
+      }
+
+      // Update dashboard
+      updateDashboard(data);
+
+      updateScore(score);
+
+      generateSuggestions(data);
+
+      // Add recent prediction
+      addRecentPrediction(score);
+
+      // Update graph
+      updatePerformanceGraph(score);
+
+      // Update mini stats
+      updateMiniStats(data, score);
+
+      console.log("✅ Prediction successful:", score);
+
+    } catch (error) {
+
+      console.error("❌ Prediction error:", error);
+
+      alert(
+        "Prediction failed.\n\n" +
+        error.message +
+        "\n\nPlease try again."
+      );
+
+    } finally {
+
+      // ALWAYS enable button again
+      if (predictButton) {
+        predictButton.disabled = false;
+        predictButton.textContent = "🎯 Predict Performance";
+      }
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   RESET BUTTON
+========================================================= */
+
+if (resetButton) {
+
+  resetButton.addEventListener("click", function () {
+
+    resetDashboard();
+
+  });
+
+}
