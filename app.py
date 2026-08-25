@@ -259,9 +259,9 @@ def login_user(
     password: str = Form(...),
     db: Session = Depends(get_db)
 ):
-    print("🔥 LOGIN ROUTE HIT")
-
     try:
+        print("🔥 LOGIN ROUTE HIT")
+
         email = email.strip().lower()
 
         print("LOGIN EMAIL:", email)
@@ -273,6 +273,8 @@ def login_user(
             .first()
         )
 
+        print("DATABASE QUERY COMPLETED")
+
         if not user:
             print("❌ USER NOT FOUND")
 
@@ -282,7 +284,6 @@ def login_user(
             )
 
         print("✅ USER FOUND:", user.email)
-        print("PASSWORD HASH:", user.password_hash[:20])
 
         password_valid = password_hash.verify(
             password,
@@ -315,63 +316,14 @@ def login_user(
         raise
 
     except Exception as e:
-        print("🔥🔥 LOGIN ERROR:", repr(e))
-        raise
-# =========================
-# PROFILE PAGE
-# =========================
+        print("🔥 LOGIN ERROR:", repr(e))
 
-@app.get("/profile")
-def profile(
-    request: Request,
-    db: Session = Depends(get_db)
-):
-
-    user_session = request.session.get("user")
-
-    if not user_session:
-        return RedirectResponse(
-            url="/",
-            status_code=303
-        )
-
-    # Get latest user data from PostgreSQL
-    user = (
-        db.query(User)
-        .filter(User.id == user_session["id"])
-        .first()
-    )
-
-    if not user:
-        request.session.clear()
-        return RedirectResponse(
-            url="/",
-            status_code=303
-        )
-
-    # Get current user's history
-    history = (
-        db.query(PredictionHistory)
-        .filter(
-            PredictionHistory.user_id == user.id
-        )
-        .order_by(
-            PredictionHistory.created_at.desc()
-        )
-        .all()
-    )
-
-    return templates.TemplateResponse(
-        request=request,
-        name="profile.html",
-        context={
-            "request": request,
-            "user": user,
-            "history": history
+        return {
+            "debug_error": str(e),
+            "error_type": type(e).__name__
         }
-    )
     
-    # =========================
+ # =========================
 # UPDATE PROFILE
 # =========================
 
