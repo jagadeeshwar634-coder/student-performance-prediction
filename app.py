@@ -259,77 +259,46 @@ def login_user(
     password: str = Form(...),
     db: Session = Depends(get_db)
 ):
-    print("🔥🔥 LOGIN ROUTE HIT 🔥🔥")
 
-    try:
-        email = email.strip().lower()
+    email = email.strip().lower()
 
-        print("EMAIL:", email)
-        print("PASSWORD LENGTH:", len(password))
+    print("LOGIN EMAIL:", email)
+    print("PASSWORD LENGTH:", len(password))
 
-        user = (
-            db.query(User)
-            .filter(User.email == email)
-            .first()
+    user = (
+        db.query(User)
+        .filter(User.email == email)
+        .first()
+    )
+
+    if not user:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
         )
 
-        print("🔥 DATABASE QUERY DONE")
+    password_valid = password_hash.verify(
+        password,
+        user.password_hash
+    )
 
-        if not user:
-            print("❌ USER NOT FOUND")
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid email or password"
-            )
+    if not password_valid:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid email or password"
+        )
 
-        print("✅ USER FOUND:", user.email)
+    request.session["user"] = {
+        "id": user.id,
+        "name": user.name,
+        "email": user.email
+    }
 
-        try:
-            password_valid = password_hash.verify(
-                password,
-                user.password_hash
-            )
-        except Exception as password_error:
-            print("🔥 PASSWORD ERROR:", repr(password_error))
-
-            return {
-                "debug_error": str(password_error),
-                "error_type": type(password_error).__name__
-            }
-
-        print("PASSWORD VALID:", password_valid)
-
-        if not password_valid:
-            raise HTTPException(
-                status_code=401,
-                detail="Invalid email or password"
-            )
-
-        request.session["user"] = {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email
-        }
-
-        print("✅ LOGIN SUCCESS")
-
-        return {
-            "message": "Login successful",
-            "name": user.name,
-            "email": user.email
-        }
-
-    except HTTPException:
-        raise
-
-    except Exception as e:
-        print("🔥🔥 DATABASE/LOGIN ERROR:", repr(e))
-
-        return {
-            "debug_error": str(e),
-            "error_type": type(e).__name__
-        }
-    
+    return {
+        "message": "Login successful",
+        "name": user.name,
+        "email": user.email
+    }
  # =========================
 # UPDATE PROFILE
 # =========================
