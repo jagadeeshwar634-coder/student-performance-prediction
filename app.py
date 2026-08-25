@@ -260,61 +260,63 @@ def login_user(
     db: Session = Depends(get_db)
 ):
     print("🔥 LOGIN ROUTE HIT")
-    email = email.strip().lower()
 
-    print("LOGIN EMAIL:", email)
-    print("PASSWORD LENGTH:", len(password))
+    try:
+        email = email.strip().lower()
 
-    # Find user
-    user = (
-        db.query(User)
-        .filter(User.email == email)
-        .first()
-    )
+        print("LOGIN EMAIL:", email)
+        print("PASSWORD LENGTH:", len(password))
 
-    # User not found
-    if not user:
-        print("USER NOT FOUND")
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
+        user = (
+            db.query(User)
+            .filter(User.email == email)
+            .first()
         )
 
-    print("USER FOUND:", user.email)
+        if not user:
+            print("❌ USER NOT FOUND")
 
-    # Verify password
-    password_valid = password_hash.verify(
-        password,
-        user.password_hash
-    )
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password"
+            )
 
-    print("PASSWORD VALID:", password_valid)
+        print("✅ USER FOUND:", user.email)
+        print("PASSWORD HASH:", user.password_hash[:20])
 
-    # Wrong password
-    if not password_valid:
-        print("PASSWORD DOES NOT MATCH")
-
-        raise HTTPException(
-            status_code=401,
-            detail="Invalid email or password"
+        password_valid = password_hash.verify(
+            password,
+            user.password_hash
         )
 
-    # Login successful
-    print("LOGIN SUCCESS")
+        print("PASSWORD VALID:", password_valid)
 
-    # Create session
-    request.session["user"] = {
-    "id": user.id,
-    "name": user.name,
-    "email": user.email
-}
+        if not password_valid:
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email or password"
+            )
 
-    return {
-        "message": "Login successful",
-        "name": user.name,
-        "email": user.email
-    }
+        request.session["user"] = {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email
+        }
+
+        print("✅ LOGIN SUCCESS")
+
+        return {
+            "message": "Login successful",
+            "name": user.name,
+            "email": user.email
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        print("🔥🔥 LOGIN ERROR:", repr(e))
+        raise
 # =========================
 # PROFILE PAGE
 # =========================
