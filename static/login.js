@@ -442,18 +442,25 @@ if (introScreen && introVideo && loginPage) {
                        FASTAPI LOGIN
                     ------------------------------------- */
 
-                    const response =
-                        await fetch(
-                            "/login",
-                            {
-                                method: "POST",
-                                body: formData
-                            }
-                        );
+                     const response =
+                      await fetch(
+                        window.location.origin + "/login",
+                      {
+                        method: "POST",
+                         body: formData
+                      }
+                     );
 
 
-                    const data =
-                        await response.json();
+                    let data;
+
+                     try {
+                         data = await response.json();
+                     } catch (e) {
+                         data = {
+                            detail: "Server error. Please check Render logs."
+                     };
+                  }
 
 
                     console.log(

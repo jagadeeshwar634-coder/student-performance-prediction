@@ -853,37 +853,48 @@ if (form) {
       console.log("📤 Sending prediction:", data);
 
       const response = await fetch("/predict", {
+  method: "POST",
 
-        method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
 
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
+  credentials: "same-origin",
 
-        body: JSON.stringify(data)
+  body: JSON.stringify(data)
+});
 
-      });
+console.log("📥 Response status:", response.status);
 
-      console.log("📥 Response status:", response.status);
+const responseText = await response.text();
 
-      const result = await response.json();
+console.log("📥 Raw response:", responseText);
 
-      console.log("📥 Prediction response:", result);
+let result;
 
-      // Handle API error
-      if (!response.ok) {
+try {
+  result = JSON.parse(responseText);
+} catch (e) {
+  throw new Error(
+    "Server returned invalid response: " +
+    responseText.substring(0, 200)
+  );
+}
 
-        throw new Error(
-          result.detail ||
-          result.message ||
-          "Prediction failed"
-        );
+console.log("📥 Prediction response:", result);
 
-      }
+if (!response.ok) {
+  throw new Error(
+    result.detail ||
+    result.message ||
+    "Prediction failed"
+  );
+}
 
-      // Get predicted score
-      const score = Number(result.predicted_score);
+const score = Number(result.predicted_score);
+
+
 
       if (!Number.isFinite(score)) {
         throw new Error("Invalid prediction score received.");
