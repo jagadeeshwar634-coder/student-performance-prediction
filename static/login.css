@@ -1552,3 +1552,20 @@ body.login-body {
         font-size: 11px;
     }
 }
+/* 📱 MOBILE INTRO VIDEO FIX */
+@media (max-width: 600px) {
+
+    #introScreen {
+        width: 100%;
+        height: 100dvh;
+        overflow: hidden;
+    }
+
+    #introVideo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+}
