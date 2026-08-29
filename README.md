@@ -158,7 +158,7 @@ accessible through a web browser.
 ---
 
 ## ✨ Features
-[📥 Download Features image](docs/features.png)
+![📥 Download Features image](docs/features.png)
 
 - 🔐 User Registration & Login
 - 🔒 Secure Password Hashing
@@ -176,7 +176,7 @@ accessible through a web browser.
 ---
 
 ## 🛠️ Technology Stack
-[📥 Download Technology Stack image ](docs/technology-stack.png)
+![📥 Download Technology Stack image ](docs/technology-stack.png)
 
 | Category | Technology |
 |---|---|
@@ -194,7 +194,7 @@ accessible through a web browser.
 ---
 
 ## 🧠 Machine Learning
-[📥 Download Machine Learning,Dataset,Input Features,Models Tested,Selected Model, Model Performance image ](docs/ml.png)
+![📥 Download Machine Learning,Dataset,Input Features,Models Tested,Selected Model, Model Performance image ](docs/ml.png)
 ### Dataset
 
  - 300 records
@@ -234,6 +234,7 @@ accessible through a web browser.
 ---
 
 ## 📊 Feature Influence
+![📥 Feature Influence image ](docs/features.png)
 
 | Feature | Coefficient |
 |---|---:|
@@ -247,7 +248,7 @@ accessible through a web browser.
 
 ## 🏗️ System Architecture
 
-![Architecture](docs/images/architecture.png)
+![System Architecture](docs/art.png)
 
 ```text
 👤 User
