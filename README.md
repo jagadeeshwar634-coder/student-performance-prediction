@@ -173,6 +173,103 @@ accessible through a web browser.
 - 🌌 Animated Earth/Space UI
 - 🚀 Render Deployment
 
+
+### 🔐 Authentication & Security
+- User Registration and Login
+- Secure password hashing using bcrypt
+- Session-based user authentication
+- Protected dashboard access
+- Secure logout functionality
+
+### 👤 User Profile
+- Personalized user profile
+- Display user name and email
+- Date of birth management
+- Edit profile information
+- Unique User ID
+- Profile-based prediction history
+
+### 🎯 AI Performance Prediction
+- Predicts student's final academic score
+- Uses five important academic and lifestyle factors:
+  - 📚 Study Hours
+  - 📅 Attendance
+  - 📊 Previous Score
+  - 📝 Assignment Score
+  - 😴 Sleep Hours
+- Real-time prediction through FastAPI
+- Prediction score displayed out of 100
+- Performance level classification
+
+### 📈 Performance Analysis
+- Visual analysis of student inputs
+- Progress bars for each input factor
+- Study hours analysis
+- Attendance analysis
+- Previous score analysis
+- Assignment score analysis
+- Sleep hours analysis
+
+### 💡 Personalized Suggestions
+- AI-based performance recommendations
+- Study improvement suggestions
+- Attendance improvement suggestions
+- Assignment performance suggestions
+- Sleep and concentration recommendations
+- Suggestions dynamically generated from user inputs
+
+### 🕘 Prediction History
+- Stores previous predictions
+- Displays recent prediction activity
+- Saves prediction input values
+- Saves predicted scores
+- Displays prediction date and time
+- User-specific prediction history
+
+### 📊 Performance Analytics
+- Interactive performance trend graph
+- Current score tracking
+- Best score tracking
+- Average score calculation
+- Recent prediction visualization
+- Prediction trend monitoring
+
+### 🗑️ History Management
+- Select individual prediction records
+- Delete selected prediction history
+- User-specific history protection
+- Easy history management from profile
+
+### 🔄 Dashboard Controls
+- Reset prediction form
+- Clear prediction results
+- Reset performance analysis
+- Reset suggestions
+- Reset graph and statistics
+
+### 📱 Responsive Design
+- Mobile-friendly interface
+- Tablet support
+- Desktop support
+- Responsive dashboard layout
+- Mobile-optimized navigation and components
+
+### 🌌 Modern UI & Animations
+- Futuristic student analytics dashboard
+- Animated Earth/Space background
+- Interactive space particles
+- Dynamic Earth movement
+- Animated performance visualization
+- Modern glass-style cards
+- Smooth hover and transition effects
+
+### 🚀 Deployment
+- FastAPI production backend
+- PostgreSQL cloud database
+- Render deployment
+- GitHub version control
+- Production-ready project structure
+
 ---
 
 ## 🛠️ Technology Stack
