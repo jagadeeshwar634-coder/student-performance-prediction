@@ -194,7 +194,7 @@ accessible through a web browser.
 ---
 
 ## 🧠 Machine Learning
-
+[📥 Download Machine Learning,Dataset,Input Features,Models Tested,Selected Model, Model Performance image ](docs/ml.png)
 ### Dataset
 
  - 300 records
